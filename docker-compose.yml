@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx_server:
+    container_name: nginx_server
+    image: nginx:alpine
+    ports:
+      - '8080:80'
+    networks:
+      - internal
+    volumes:
+      - ./src/:/var/www/html/
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php_server
+  php_server:
+    container_name: php_server
+    image: php:fpm-alpine
+    ports:
+      - '9000:9000'
+    networks:
+      - internal
+    volumes:
+      - ./src/:/var/www/html/
+
+networks:
+  internal:
+    driver: bridge
